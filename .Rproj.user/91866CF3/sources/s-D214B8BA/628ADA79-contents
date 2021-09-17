@@ -1,7 +1,9 @@
+#### library packages ####
 library(data.table)
 library(EGRET)
 library(dataRetrieval)
 
+#### A function to read data from a gauge station ####
 GetStation <- function(x){
   url <- paste0("data/",x,".txt")
   
@@ -23,7 +25,9 @@ GetStation <- function(x){
   return(result)
 }
 
-river <- c("mississippi", "des", "illinois", "iowa", "minnesota", "wapsipinicon")
+#### select five stations ####
+
+river <- c("mississippi", "des", "iowa", "minnesota", "wapsipinicon")
 
 for(i in 1:length(river)){
   assign(river[i], GetStation(river[i]))
