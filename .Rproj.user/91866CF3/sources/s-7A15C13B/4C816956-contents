@@ -48,11 +48,8 @@ data %>% mutate(Month = as.factor(Month)) %>%
 
 #### Spatial EDA ####
 
+load("data/map.Rdata")
 # summary statistics for all locations For instance
-bound <- bound %>% filter(huc2=="07")
-ggplot(data = bound) +
-  geom_sf() +
-  geom_point(data = Siteinfor, aes(x = dec_long_va, y = dec_lat_va))
 
 
 

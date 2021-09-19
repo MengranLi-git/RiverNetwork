@@ -2,19 +2,20 @@
 library(tidyverse)
 library(leaflet)
 library(rgeos)
-
+library(rgdal)
 #### load data ####
 load("data/data.Rdata")
 
 #### draw a map to display the locations and rivers ####
 # read map data
 bound <- sf::st_read(dsn = "data/map/wbdhu2_a_us_september2020.gdb")
+bound <- bound %>% filter(huc2=="07")
 # set the bottom map
 GetURL <- function(service, host = "basemap.nationalmap.gov") {
   sprintf("https://%s/arcgis/services/%s/MapServer/WmsServer", host, service)
 }
 # draw the map
-bound %>% filter(huc2=="07") %>%
+bound %>%
   leaflet() %>%
   #  setView(lng = -95, lat = 40, zoom = 4) %>%
   addCircleMarkers(
@@ -56,9 +57,10 @@ MISS <- subset(riversData, (SYSTEM %in% "Mississippi"))
 miss <- fortify(MISS)
 
 # Combine the two river dataset
-df.usa_rivers <- rbind(df.usa_rivers,miss)
+df.usa_rivers <- rbind(df.usa_rivers, miss)
 
 # Mark the gauge stations
+bound <- bound %>% filter(huc2=="07") 
 ggplot(data = bound) +
   geom_sf() +
   geom_path(data = df.usa_rivers, 
@@ -68,5 +70,5 @@ ggplot(data = bound) +
   coord_sf(xlim = c(-98,-89), ylim = c(40,48)) +
   labs(title = "Rivers and waterways of the United States")
 
-
+save(bound, df.usa_rivers, file = "data/map.Rdata")
 
