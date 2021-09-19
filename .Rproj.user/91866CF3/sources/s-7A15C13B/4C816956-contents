@@ -10,6 +10,17 @@ data <- data %>% filter(Month %in% 6:8)
 data$station <- rep(Siteinfor$site_no,each = 3680)
 data <- data %>% filter(Q >= 0)
 
+#### Temporal EDA ####
+
+# boxplot
+data %>% mutate(Month = as.factor(Month)) %>%
+  select("station", "Q", "DecYear", "Month", "River") %>%
+  group_by(DecYear, River) %>%
+  ggplot(aes(x=DecYear,y=Q, group = DecYear))+
+  geom_boxplot() +
+  facet_wrap(~River)
+
+# Year ~ Month ~ river
 data %>% mutate(Month = as.factor(Month)) %>%
   select("station", "Q", "DecYear", "Month", "River") %>%
   group_by(DecYear, Month, River) %>%
@@ -17,7 +28,32 @@ data %>% mutate(Month = as.factor(Month)) %>%
   ggplot(aes(x=DecYear,y=meanQ,group=Month, color = Month), color = Month)+
   geom_line() +
   facet_wrap(~River)
-  
+
+# Year ~ river
+data %>% mutate(Month = as.factor(Month)) %>%
+  select("station", "Q", "DecYear", "Month", "River") %>%
+  group_by(DecYear, River) %>%
+  summarise(meanQ=mean(Q)) %>% 
+  ggplot(aes(x=DecYear,y=meanQ,group=River, color = River), color = River)+
+  geom_line() 
+
+# Year ~ station grouped by river
+data %>% mutate(Month = as.factor(Month)) %>%
+  select("station", "Q", "DecYear", "Month", "River") %>%
+  group_by(DecYear, River, station) %>%
+  summarise(meanQ=mean(Q)) %>% 
+  ggplot(aes(x=DecYear,y=meanQ,group=station, color = station), color = station)+
+  geom_line() +
+  facet_wrap(~River)
+
+#### Spatial EDA ####
+
+# summary statistics for all locations For instance
+bound <- bound %>% filter(huc2=="07")
+ggplot(data = bound) +
+  geom_sf() +
+  geom_point(data = Siteinfor, aes(x = dec_long_va, y = dec_lat_va))
+
 
 
 

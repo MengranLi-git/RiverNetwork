@@ -16,3 +16,7 @@ We selected data in `June, July and August`. The annual maxima occurred in these
 in each station.
 
 The Hydrologic Boundary shapefile is obtained from [wbdhu2_a_us_september2020.gdb](https://nrcs.app.box.com/v/huc/folder/18546994164).
+
+## EDA
+
+### 
