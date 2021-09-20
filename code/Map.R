@@ -60,7 +60,7 @@ miss <- fortify(MISS)
 df.usa_rivers <- rbind(df.usa_rivers, miss)
 
 # Mark the gauge stations
-bound <- bound %>% filter(huc2=="07") 
+ 
 ggplot(data = bound) +
   geom_sf() +
   geom_path(data = df.usa_rivers, 

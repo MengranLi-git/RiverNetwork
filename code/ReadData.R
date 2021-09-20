@@ -21,6 +21,7 @@ GetStation <- function(x){
   Streamflow <- Streamflow[index]
   Streamflow <- rbindlist(Streamflow)[
     ,DecYear := floor(DecYear)]
+  Streamflow$River <- x
   result <- list(readNWISsite(gauge[, 2]), Streamflow)
   return(result)
 }
