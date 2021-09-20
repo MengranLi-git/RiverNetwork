@@ -1,11 +1,11 @@
 {
     "id": "807BA88F",
-    "path": null,
-    "project_path": null,
+    "path": "F:/RiverNetwork/code/MarginalGEV.R",
+    "project_path": "code/MarginalGEV.R",
     "type": "r_source",
     "hash": "1632315909",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1632162594868.0,
     "source_on_save": false,
     "relative_order": 5,
@@ -14,14 +14,14 @@
         "source_window_id": "",
         "Source": "Source",
         "cursorPosition": "6,0",
-        "scrollLine": "3"
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1632093286,
-    "encoding": "",
+    "lastKnownWriteTime": 1632177349,
+    "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1632163041814,
+    "last_content_update": 1632177349957,
     "read_only": false,
     "read_only_alternatives": []
 }
