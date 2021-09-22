@@ -1,5 +1,6 @@
 library(purrr)
 library(ggpubr)
+source("code/BreakPoints.R")
 source("code/NonLinearGEV/FitLinear.R")
 source("code/NonLinearGEV/CutBreakpoint.R")
 source("code/NonLinearGEV/ll.R")
@@ -10,8 +11,13 @@ source("code/NonLinearGEV/ReturnLevel.R")
 source("code/NonLinearGEV/GraphData.R")
 source("code/NonLinearGEV/PlotParameter.R")
 
+
+#### GEV marginal ####
+SummerMaxima <- data %>% group_by(station, DecYear) %>% summarise(max(Q)) %>% spread(station, `max(Q)`)
+
 Graph <- list()
 ReturnPlot <- list()
+nllh <- matrix(NA, nrow = NoSt, ncol = 9)
 for(i in 1:NoSt){
 Station <- SummerMaxima[,c(1, i+1)]
 names(Station) <- c("DecYear", "Q")
@@ -30,6 +36,17 @@ r <- which.min(c(
 ))
 
 FitList[[7]] <- FitList[[r + 1]]
+
+for(j in 1:7){
+  nllh[i, j] <- FitList[[j]]$nllh
+}
+nllh[i, 8] <- r + 1
+
+if(2*(FitList[[7]]$nllh - fit1[[2]]$nllh) < qchisq(0.95, 1)){
+  nllh[i,9] <- "no"
+}else{
+  nllh[i,9] <- "yes"
+}
 
 nR2 <- ReturnLevel(FitList[[7]], 1 / 2)
 nR10 <- ReturnLevel(FitList[[7]], 1 / 10)
@@ -92,22 +109,12 @@ print(round(FitList[[7]]$mle, 2))
 print(FitList[[7]]$formulation)
 }
 
-save(Graph, file = "data/Graph.Rdata")
+save(Graph, ReturnPlot, file = "data/Graph.Rdata")
 
+nllh <- as.data.frame(nllh)
+names(nllh) <- c("linear_fit", "s_fit", "single_fit", "double_fit", "quad_fit", "abrupt_fit", "best_fit", "n","significance")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+save(nllh, file = "data/nllh.Rdata")
 
 
 
